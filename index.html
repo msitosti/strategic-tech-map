@@ -1113,6 +1113,47 @@
         border-bottom: none;
         transition: max-height 0.3s ease, padding 0.3s ease;
       }
+
+      /* Hide control-bar during search (info shown inline in results) */
+      body.is-searching .control-bar {
+        display: none;
+      }
+
+      /* Remove min-height forcing during search to eliminate bottom whitespace */
+      body.is-searching {
+        min-height: unset;
+      }
+      body.is-searching .app {
+        min-height: unset;
+      }
+
+      /* Inline search header inside main */
+      .search-inline-header {
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        padding: 6px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .search-inline-header .result-count-inline {
+        font-size: 11px;
+        color: var(--text-dim);
+      }
+      .search-inline-header .result-count-inline strong {
+        color: var(--accent);
+        font-family: 'JetBrains Mono', monospace;
+      }
+      .search-inline-header .tag-list-inline {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      .search-inline-header .tag-list-inline .tag {
+        font-size: 9px;
+        padding: 2px 6px;
+      }
     }
 
     /* scrollbar */
@@ -1949,8 +1990,22 @@ function renderSearch(main, rcDiv) {
 
   rcDiv.innerHTML = `검색 "<strong>${state.searchQuery}</strong>" · <strong>${results.length}</strong>개 결과`;
 
+  // Build inline header for mobile (control-bar is hidden via CSS)
+  let inlineHeaderHTML = '';
+  if (window.innerWidth <= 768) {
+    const tagSpans = [];
+    state.activeLaws.forEach(k => {
+      const cls = LAW_CLASSES[k];
+      tagSpans.push(`<span class="tag tag-${cls}">${LAW_SHORT[k]}</span>`);
+    });
+    inlineHeaderHTML = `<div class="search-inline-header">
+      <div class="result-count-inline">검색 "<strong>${state.searchQuery}</strong>" · <strong>${results.length}</strong>개 결과</div>
+      <div class="tag-list-inline">${tagSpans.join('')}</div>
+    </div>`;
+  }
+
   if (results.length === 0) {
-    main.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">검색 결과가 없습니다.</div></div>`;
+    main.innerHTML = inlineHeaderHTML + `<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">검색 결과가 없습니다.</div></div>`;
     return;
   }
 
@@ -2038,7 +2093,7 @@ function renderSearch(main, rcDiv) {
     container.appendChild(card);
   });
 
-  main.innerHTML = '';
+  main.innerHTML = inlineHeaderHTML;
   main.appendChild(container);
 }
 
