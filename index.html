@@ -854,58 +854,58 @@
         padding-right: 0;
         margin-bottom: 4px;
       }
+      /* Law pills: 5-col grid to align with specs */
       .tech-laws {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
         flex: 0 0 100%;
         width: 100%;
         min-width: 0;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 4px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        gap: 2px;
         margin-top: 2px;
-        padding-bottom: 4px;
+        overflow: visible;
       }
 
-      /* Law pills: auto-size, single row, no wrap */
       .tl-pill {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: auto;
-        min-width: fit-content;
-        padding: 4px 8px;
-        font-size: 8px;
-        flex-shrink: 0;
+        width: 100%;
+        min-width: 0;
+        padding: 3px 2px;
+        font-size: 7px;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
         visibility: visible;
         opacity: 1;
         height: auto;
       }
 
-      /* Hide empty placeholder pills on mobile */
+      /* Empty pills: keep space for 5-col alignment, hide visually */
       .tl-pill.tl-empty {
-        display: none;
+        display: inline-flex;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
       }
 
-      /* Specs accordion: full width, no spacer */
+      /* Specs accordion: full width, no spacer, 5-col grid */
       .specs-panel {
         flex-direction: column;
-        padding: 0 8px 8px 8px;
+        padding: 0 0 8px 0;
       }
       .specs-panel-spacer {
         display: none;
       }
       .specs-panel-grid {
         width: 100%;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(5, 1fr);
       }
       .specs-col {
-        font-size: 10px;
-        padding: 8px 6px;
+        font-size: 9px;
+        padding: 6px 3px;
         min-height: 36px;
       }
 
