@@ -813,6 +813,83 @@
     /* Highlight filter dim */
     .tech-row.dimmed { opacity: 0.25; }
     .sector-card.dimmed { opacity: 0.3; }
+
+    .tech-row.has-note { cursor: pointer; }
+
+    /* ─── NOTE POPUP ─── */
+    .note-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.15s ease;
+    }
+    .note-overlay.visible { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .note-popup {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      animation: popIn 0.2s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .note-popup-close {
+      position: absolute;
+      top: 12px; right: 14px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.15s;
+      line-height: 1;
+    }
+    .note-popup-close:hover { background: var(--bg3); color: var(--text); }
+
+    .note-popup-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 14px;
+      padding-right: 30px;
+      line-height: 1.4;
+    }
+
+    .note-popup-body {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .note-popup-empty {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -882,6 +959,15 @@
 
     <!-- Main -->
     <main id="main-content"></main>
+  </div>
+</div>
+
+<!-- Note Popup -->
+<div class="note-overlay" id="note-overlay">
+  <div class="note-popup" id="note-popup">
+    <button class="note-popup-close" id="note-popup-close">✕</button>
+    <div class="note-popup-title" id="note-popup-title"></div>
+    <div class="note-popup-body" id="note-popup-body"></div>
   </div>
 </div>
 
@@ -1196,7 +1282,7 @@ function renderDetail(main, rcDiv) {
     const itemsContainer = block.querySelector('.subsector-items');
     visibleItems.forEach(item => {
       const row = document.createElement('div');
-      row.className = 'tech-row';
+      row.className = 'tech-row' + (item.note ? ' has-note' : '');
       const pills = LAW_KEYS.map(k => {
         const active = item.laws[k] && state.activeLaws.has(k);
         return active
@@ -1207,6 +1293,7 @@ function renderDetail(main, rcDiv) {
         <div class="tech-name">${item.name}</div>
         <div class="tech-laws">${pills}</div>
       `;
+      row.addEventListener('click', () => showNotePopup(item.name, item.note));
       itemsContainer.appendChild(row);
     });
     container.appendChild(block);
@@ -1388,6 +1475,33 @@ function renderSearch(main, rcDiv) {
 
   main.innerHTML = `<div class="search-results">${html}</div>`;
 }
+
+// ─── NOTE POPUP ───
+function showNotePopup(name, note) {
+  const overlay = document.getElementById('note-overlay');
+  document.getElementById('note-popup-title').textContent = name;
+  const body = document.getElementById('note-popup-body');
+  if (note && note.trim()) {
+    body.className = 'note-popup-body';
+    body.textContent = note;
+  } else {
+    body.className = 'note-popup-empty';
+    body.textContent = '등록된 상세 정보가 없습니다.';
+  }
+  overlay.classList.add('visible');
+}
+
+function hideNotePopup() {
+  document.getElementById('note-overlay').classList.remove('visible');
+}
+
+document.getElementById('note-overlay').addEventListener('click', function(e) {
+  if (e.target === this) hideNotePopup();
+});
+document.getElementById('note-popup-close').addEventListener('click', hideNotePopup);
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') hideNotePopup();
+});
 
 // ─── HOME NAVIGATION ───
 function goHome() {
