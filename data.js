@@ -11,7 +11,7 @@ const TECH_DATA = {
   },
   sectors: [
     {
-      id: 1, name: "반도체", icon: "💾",
+      id: 1, name: "반도체", icon: "🔲",
       laws: {
         strategic: "반도체·디스플레이",
         tax_strategic: "반도체",
