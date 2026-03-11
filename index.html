@@ -1405,9 +1405,12 @@ function renderStats(main, rcDiv) {
     const cnt = TECH_DATA.sectors.reduce((a,s) => a + s.subsectors.reduce((a2,ss) => a2 + ss.items.filter(i=>i.laws[k1]&&i.laws[k2]).length, 0), 0);
     if (cnt > 0) both[`${LAW_SHORT[k1]} + ${LAW_SHORT[k2]}`] = cnt;
   }));
-  const overlapRows = Object.entries(both).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([pair, cnt]) =>
-    `<div class="bar-row"><div class="bar-label" style="width:200px;font-size:10px">${pair}</div><div class="bar-track"><div class="bar-fill bar-fill-b" style="width:${cnt/maxTech*100}%">${cnt}</div></div></div>`
-  ).join('');
+  const overlapSorted = Object.entries(both).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const maxOverlap = overlapSorted.length > 0 ? overlapSorted[0][1] : 1;
+  const overlapRows = overlapSorted.map(([pair, cnt]) => {
+    const pct = Math.round(cnt / maxOverlap * 100);
+    return `<div class="bar-row"><div class="bar-label" style="width:200px;font-size:10px">${pair}</div><div class="bar-track"><div class="bar-fill bar-fill-b" style="width:${pct}%">${cnt}</div></div></div>`;
+  }).join('');
 
   main.innerHTML = `
     <div class="stats-grid">
