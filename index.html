@@ -642,8 +642,8 @@
       border-radius: 10px;
       padding: 14px 16px;
       display: flex;
-      align-items: center;
-      gap: 12px;
+      flex-direction: column;
+      gap: 6px;
       cursor: pointer;
       transition: all 0.15s;
     }
@@ -656,10 +656,19 @@
       white-space: nowrap;
     }
 
-    .sri-name {
-      flex: 1;
-      font-size: 13px;
+    /* Tech row inside search card inherits card-view alignment */
+    .sri-tech-row {
+      width: 100%;
+      padding: 0;
+      border: none;
     }
+    .sri-tech-row:hover { background: transparent; border-color: transparent; }
+
+    .sri-name-link {
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .sri-name-link:hover { text-decoration: underline; }
 
     mark {
       background: var(--mark-bg);
@@ -797,10 +806,13 @@
       .hstat-num { font-size: 16px; }
 
       /* Sidebar compact */
-      .sidebar-section { padding: 12px; }
+      .sidebar-section { padding: 10px 12px; }
 
       /* Main content */
-      main { padding: 12px; }
+      main { padding: 8px 12px; }
+
+      /* Search results: reduce gap to main */
+      .search-results { gap: 6px; }
 
       /* Tech row: stack vertically on mobile */
       .tech-row {
@@ -943,7 +955,7 @@
         overflow-x: hidden;
       }
 
-      /* Matrix wrap: fit within viewport, no scroll */
+      /* Matrix wrap: fit within viewport */
       .matrix-wrap {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -959,26 +971,28 @@
         font-size: 10px;
       }
       .matrix-table th {
-        padding: 4px 2px;
-        font-size: 9px;
+        padding: 3px 2px;
+        font-size: 10px;
         white-space: normal;
         word-break: keep-all;
       }
+      .matrix-table th:first-child {
+        width: 22%;
+        text-align: left;
+      }
       .matrix-table th.law-th {
-        font-size: 9px;
+        width: 15.6%;
+        font-size: 10px;
         min-width: 0;
-        padding: 6px 2px;
+        padding: 4px 2px;
         writing-mode: vertical-rl;
         text-orientation: mixed;
         white-space: nowrap;
-        height: 80px;
-      }
-      .matrix-table th:first-child {
-        width: 30%;
-        text-align: left;
+        max-height: 80px;
+        overflow: hidden;
       }
       .matrix-table td {
-        padding: 4px 2px;
+        padding: 3px 2px;
         font-size: 10px;
       }
       .matrix-table .sector-td {
@@ -987,13 +1001,82 @@
         word-break: keep-all;
         line-height: 1.3;
       }
+      .matrix-table .sector-td {
+        font-size: 10px;
+      }
       .matrix-cell-yes .check-icon {
         width: 16px;
         height: 16px;
-        font-size: 9px;
+        font-size: 14px;
       }
       .matrix-cell-yes .check-no {
-        font-size: 10px;
+        font-size: 14px;
+      }
+
+      /* Search result cards: 3-row vertical layout on mobile */
+      .search-result-item {
+        padding: 10px 12px;
+      }
+      .search-result-item .sri-sector {
+        font-size: 12px;
+      }
+      .sri-tech-row {
+        padding: 0 !important;
+      }
+
+      /* Search card: pills use 5-col grid to align with specs */
+      .search-result-item .tech-laws {
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr) !important;
+        flex: none !important;
+        flex-wrap: unset !important;
+        overflow-x: visible !important;
+        gap: 3px;
+        width: 100%;
+        margin-top: 4px;
+      }
+      /* Empty pills: keep space for alignment, just hide visually */
+      .search-result-item .tl-pill.tl-empty {
+        display: block !important;
+        visibility: hidden;
+      }
+      .search-result-item .tl-pill {
+        width: 100%;
+        min-width: 0;
+        font-size: 7px;
+        padding: 3px 2px;
+        text-align: center;
+        flex-shrink: unset;
+      }
+
+      /* Search accordion: no spacer, 5-col grid matching pills */
+      .search-result-item .specs-panel-spacer {
+        display: none;
+      }
+      .search-result-item .specs-panel-grid {
+        width: 100%;
+        grid-template-columns: repeat(5, 1fr) !important;
+      }
+      .search-result-item .specs-col {
+        font-size: 9px;
+        padding: 6px 4px;
+        min-height: 30px;
+      }
+
+      /* Control bar: reduce whitespace on search results */
+      .control-bar {
+        padding: 6px 12px !important;
+        gap: 8px;
+      }
+      .result-count {
+        font-size: 11px;
+      }
+      .tag-list {
+        gap: 4px;
+      }
+      .tag {
+        font-size: 9px;
+        padding: 2px 6px;
       }
 
       /* Sector nav: collapsible on mobile */
@@ -1836,7 +1919,8 @@ function renderSearch(main, rcDiv) {
         const nameL = item.name.toLowerCase();
         const ssL = ss.name.toLowerCase();
         const noteL = (item.note || '').toLowerCase();
-        if (keywords.some(kw => nameL.includes(kw) || ssL.includes(kw) || noteL.includes(kw))) {
+        const specsL = item.specs ? LAW_KEYS.map(k => (item.specs[k] || '')).join(' ').toLowerCase() : '';
+        if (keywords.some(kw => nameL.includes(kw) || ssL.includes(kw) || noteL.includes(kw) || specsL.includes(kw))) {
           results.push({ sector: s, subsector: ss, item });
         }
       });
@@ -1850,25 +1934,92 @@ function renderSearch(main, rcDiv) {
     return;
   }
 
-  const html = results.map(r => {
+  const container = document.createElement('div');
+  container.className = 'search-results';
+
+  results.forEach(r => {
     const hlPattern = keywords.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
     const highlight = (s) => s.replace(new RegExp(`(${hlPattern})`, 'gi'), '<mark>$1</mark>');
+    const hasSpecs = r.item.specs && LAW_KEYS.some(k => r.item.specs[k]);
     const pills = LAW_KEYS.map(k => {
       const active = r.item.laws[k] && state.activeLaws.has(k);
       return active
-        ? `<span class="tl-pill tl-${LAW_CLASSES[k]}">${LAW_SHORT[k]}</span>`
+        ? `<span class="tl-pill tl-${LAW_CLASSES[k]}${hasSpecs ? ' tl-clickable' : ''}" data-law="${k}">${LAW_SHORT[k]}</span>`
         : `<span class="tl-pill tl-empty">${LAW_SHORT[k]}</span>`;
     }).join('');
-    return `
-      <div class="search-result-item" onclick="pushHistoryState();state.activeSector=${r.sector.id};state.searchQuery='';document.getElementById('search-input').value='';state.view='overview';buildSectorNav();render()">
-        <div class="sri-sector">${r.sector.icon} ${r.sector.name}</div>
-        <div class="sri-name">${highlight(r.item.name)}</div>
-        <div class="tech-laws">${pills}</div>
-      </div>
-    `;
-  }).join('');
 
-  main.innerHTML = `<div class="search-results">${html}</div>`;
+    const card = document.createElement('div');
+    card.className = 'search-result-item';
+
+    // Sector label row
+    const sectorLabel = document.createElement('div');
+    sectorLabel.className = 'sri-sector';
+    sectorLabel.innerHTML = `${r.sector.icon} ${r.sector.name}`;
+    card.appendChild(sectorLabel);
+
+    // Tech row (same structure as card view for alignment)
+    const techRow = document.createElement('div');
+    techRow.className = 'tech-row sri-tech-row';
+    techRow.innerHTML = `
+      <div class="tech-name"><span class="tech-name-link sri-name-link">${highlight(r.item.name)}</span></div>
+      <div class="tech-laws">${pills}</div>
+    `;
+    card.appendChild(techRow);
+
+    // Helper: navigate to sector + scroll to subsector
+    function goToSubsector() {
+      pushHistoryState();
+      state.activeSector = r.sector.id;
+      state.searchQuery = '';
+      document.getElementById('search-input').value = '';
+      state.view = 'overview';
+      buildSectorNav();
+      render();
+      setTimeout(() => {
+        const titles = document.querySelectorAll('.subsector-title');
+        for (const t of titles) {
+          if (t.textContent.includes(r.subsector.name)) {
+            t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            break;
+          }
+        }
+      }, 100);
+    }
+
+    // Tech name click → navigate to sector detail + scroll to subsector
+    techRow.querySelector('.sri-name-link').addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToSubsector();
+    });
+
+    // Law pill click → toggle specs accordion (inserted after techRow, inside card)
+    if (hasSpecs) {
+      techRow.querySelectorAll('.tl-clickable').forEach(pill => {
+        pill.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Close any other open search accordion
+          const existingAcc = container.querySelector('.specs-accordion');
+          if (existingAcc && existingAcc.parentElement !== card) {
+            existingAcc.classList.remove('open');
+            setTimeout(() => existingAcc.remove(), 350);
+          }
+          toggleSpecsAccordion(techRow, r.item);
+        });
+      });
+    }
+
+    // Card click (background area) → navigate
+    card.addEventListener('click', (e) => {
+      // Don't navigate if clicking inside tech-row (pills handle their own)
+      if (e.target.closest('.tech-row')) return;
+      goToSubsector();
+    });
+
+    container.appendChild(card);
+  });
+
+  main.innerHTML = '';
+  main.appendChild(container);
 }
 
 // ─── SPECS ACCORDION ───
