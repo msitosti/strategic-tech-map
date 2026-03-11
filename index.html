@@ -485,6 +485,32 @@
       white-space: nowrap;
     }
 
+    /* Sector header law-name grid (aligned with tech-laws pills) */
+    .sector-law-grid {
+      display: flex;
+      gap: 3px;
+      margin-top: -8px;
+      padding: 0 20px 0 340px;
+    }
+    .sector-law-grid-item {
+      flex: 1;
+      text-align: center;
+      min-width: 0;
+    }
+    .sector-law-grid-item .law-name {
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: block;
+      text-align: center;
+    }
+    .sector-law-grid-item .law-scope {
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+      display: block;
+    }
+
     .back-btn {
       background: var(--bg3);
       border: 1px solid var(--border);
@@ -892,11 +918,15 @@
       .sector-header-info { min-width: 0; width: 100%; }
       .sector-header-name { font-size: 18px; }
 
-      /* Sector header law grid: wrap to 2-3 columns on narrow screens */
-      .sector-header-info > div[style*="grid-template-columns"] {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 6px !important;
-        font-size: 11px !important;
+      /* Sector header law grid: wrap on mobile, no left padding */
+      .sector-law-grid {
+        padding-left: 0;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .sector-law-grid-item {
+        flex: 1 1 calc(50% - 6px);
+        min-width: calc(50% - 6px);
       }
 
       /* Control bar */
@@ -964,7 +994,7 @@
       }
 
       /* Matrix table: fixed layout to fit mobile screen */
-      /* 7 columns: 분야(20%) + 법령5개(5×13%=65%) + 세부기술(15%) = 100% */
+      /* 7 columns: 분야(18%) + 법령5개(5×13%=65%) + 세부기술(17%) = 100% */
       .matrix-table {
         min-width: 0 !important;
         width: 100% !important;
@@ -980,13 +1010,17 @@
         white-space: normal;
         word-break: keep-all;
       }
-      .matrix-table th:first-child {
-        width: 20%;
+      .matrix-table th:first-child,
+      .matrix-table td:first-child {
+        width: 18%;
         text-align: left;
       }
-      .matrix-table th.law-th {
+      .matrix-table th.law-th,
+      .matrix-table td:nth-child(n+2):nth-child(-n+6) {
         width: 13%;
-        font-size: 9px;
+      }
+      .matrix-table th.law-th {
+        font-size: 8px;
         min-width: 0;
         padding: 2px 1px;
         writing-mode: vertical-rl;
@@ -996,18 +1030,19 @@
         overflow: visible;
       }
       /* 세부기술 열 (7번째, 마지막) */
-      .matrix-table th:last-child {
-        width: 15%;
+      .matrix-table th:last-child,
+      .matrix-table td:last-child {
+        width: 17%;
         text-align: center;
-        font-size: 9px;
+      }
+      .matrix-table th:last-child {
+        font-size: 8px;
         writing-mode: vertical-rl;
         text-orientation: mixed;
         white-space: nowrap;
         min-height: 60px;
       }
       .matrix-table td:last-child {
-        width: 15%;
-        text-align: center;
         font-size: 10px;
       }
       .matrix-table .sector-td {
@@ -1786,14 +1821,17 @@ function renderDetail(main, rcDiv) {
         <div class="sector-header-info">
           <div class="sector-header-name">No.${sector.id} ${sector.name}</div>
           <div class="law-badges">${badges}</div>
-          <div style="margin-top:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font-size:13px;color:var(--text-dim)">
-            ${LAW_KEYS.map(k => {
-              const val = sector.laws[k];
-              return `<div><div style="font-size:11px;margin-bottom:4px;font-weight:700;color:${getLawColor(k)}">${LAW_SHORT[k]}</div>${val || '-'}</div>`;
-            }).join('')}
-          </div>
         </div>
         <button class="back-btn" onclick="history.back()">← 목록</button>
+      </div>
+      <div class="sector-law-grid">
+        ${LAW_KEYS.map(k => {
+          const val = sector.laws[k];
+          return `<div class="sector-law-grid-item">
+            <span class="law-name" style="color:${getLawColor(k)}">${LAW_SHORT[k]}</span>
+            <span class="law-scope">${val || '-'}</span>
+          </div>`;
+        }).join('')}
       </div>
       <div id="subsectors-container"></div>
     </div>
