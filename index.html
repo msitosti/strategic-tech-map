@@ -1103,6 +1103,16 @@
       .sidebar-section:last-of-type .sector-list.sector-open {
         max-height: 2000px;
       }
+
+      /* Hide law-filter & sector-nav sections completely during search */
+      body.is-searching .sidebar-section:nth-of-type(3),
+      body.is-searching .sidebar-section:last-of-type {
+        max-height: 0;
+        padding: 0;
+        overflow: hidden;
+        border-bottom: none;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+      }
     }
 
     /* scrollbar */
@@ -1494,6 +1504,7 @@ function init() {
     }
     if (val.length === 0) _searchPushed = false;
     state.searchQuery = val;
+    syncSearchingClass();
     render();
   });
 }
@@ -1622,7 +1633,16 @@ function setView(v) {
 }
 
 // ─── RENDER ───
+function syncSearchingClass() {
+  if (window.innerWidth <= 768 && state.searchQuery.length >= 1) {
+    document.body.classList.add('is-searching');
+  } else {
+    document.body.classList.remove('is-searching');
+  }
+}
+
 function render() {
+  syncSearchingClass();
   const main = document.getElementById('main-content');
   const rcDiv = document.getElementById('result-count');
   const tagDiv = document.getElementById('active-tags');
