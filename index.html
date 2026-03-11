@@ -524,7 +524,6 @@
     .tech-row {
       display: flex;
       align-items: center;
-      gap: 10px;
       padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid transparent;
@@ -534,22 +533,25 @@
     .tech-row:hover { background: var(--bg3); border-color: var(--border); }
 
     .tech-name {
-      flex: 1;
+      min-width: 320px;
+      width: 320px;
+      flex-shrink: 0;
       font-size: 13px;
       line-height: 1.4;
+      padding-right: 12px;
     }
 
     .tech-laws {
       display: grid;
-      grid-template-columns: repeat(5, auto);
+      grid-template-columns: repeat(5, 1fr);
       gap: 4px;
-      flex-shrink: 0;
-      justify-content: end;
+      flex: 1;
+      min-width: 0;
     }
 
     .tl-pill {
       font-size: 9px;
-      padding: 2px 7px;
+      padding: 2px 4px;
       border-radius: 20px;
       border: 1px solid;
       font-weight: 700;
@@ -832,8 +834,9 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .tl-pill.tl-clickable:hover {
-      transform: scale(1.1);
+    /* Hover on any pill → highlight ALL pills in the row */
+    .tech-laws:hover .tl-pill:not(.tl-empty) {
+      transform: scale(1.08);
       filter: brightness(1.2);
     }
 
@@ -843,21 +846,31 @@
       overflow: hidden;
       transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
       opacity: 0;
-      border-radius: 0 0 8px 8px;
     }
     .specs-accordion.open {
       max-height: 600px;
       opacity: 1;
     }
     .specs-panel {
+      display: flex;
+      padding: 0 12px 8px 12px;
+    }
+    .specs-panel-spacer {
+      min-width: 320px;
+      width: 320px;
+      flex-shrink: 0;
+      padding-right: 12px;
+    }
+    .specs-panel-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 1px;
+      flex: 1;
+      min-width: 0;
       background: var(--border);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
-      margin: 0 12px 8px 12px;
     }
     .specs-col {
       background: var(--bg2);
@@ -874,7 +887,7 @@
     }
     .specs-col-header {
       background: var(--bg3);
-      padding: 8px;
+      padding: 6px 4px;
       font-size: 10px;
       font-weight: 700;
       text-align: center;
@@ -1323,10 +1336,10 @@ function renderDetail(main, rcDiv) {
         <div class="sector-header-info">
           <div class="sector-header-name">No.${sector.id} ${sector.name}</div>
           <div class="law-badges">${badges}</div>
-          <div style="margin-top:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font-size:11px;color:var(--text-dim)">
+          <div style="margin-top:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font-size:13px;color:var(--text-dim)">
             ${LAW_KEYS.map(k => {
               const val = sector.laws[k];
-              return `<div><div style="font-size:10px;margin-bottom:2px;color:${getLawColor(k)}">${LAW_SHORT[k]}</div>${val || '-'}</div>`;
+              return `<div><div style="font-size:11px;margin-bottom:4px;font-weight:700;color:${getLawColor(k)}">${LAW_SHORT[k]}</div>${val || '-'}</div>`;
             }).join('')}
           </div>
         </div>
@@ -1597,7 +1610,6 @@ function toggleSpecsAccordion(row, item) {
   }).join('');
 
   const cells = LAW_KEYS.map(k => {
-    const cls = LAW_CLASSES[k];
     const isActive = item.laws[k];
     const specVal = item.specs ? item.specs[k] : null;
     let content = '';
@@ -1609,8 +1621,11 @@ function toggleSpecsAccordion(row, item) {
 
   accordion.innerHTML = `
     <div class="specs-panel">
-      ${headers}
-      ${cells}
+      <div class="specs-panel-spacer"></div>
+      <div class="specs-panel-grid">
+        ${headers}
+        ${cells}
+      </div>
     </div>
   `;
 
