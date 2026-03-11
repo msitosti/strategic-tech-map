@@ -544,19 +544,21 @@
     .tech-laws {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 4px;
+      gap: 3px;
       flex: 1;
       min-width: 0;
+      justify-items: center;
     }
 
     .tl-pill {
       font-size: 9px;
-      padding: 2px 4px;
+      padding: 2px 5px;
       border-radius: 20px;
       border: 1px solid;
       font-weight: 700;
       white-space: nowrap;
       text-align: center;
+      width: calc(100% - 18px);
     }
 
     .tl-pill.tl-empty {
@@ -885,6 +887,11 @@
     .specs-col.specs-inactive {
       opacity: 0.3;
     }
+    .specs-col.specs-bar-a { border-top: 3px solid var(--law-a); }
+    .specs-col.specs-bar-b { border-top: 3px solid var(--law-b); }
+    .specs-col.specs-bar-c { border-top: 3px solid var(--law-c); }
+    .specs-col.specs-bar-d { border-top: 3px solid var(--law-d); }
+    .specs-col.specs-bar-e { border-top: 3px solid var(--law-e); }
     .specs-col-header {
       background: var(--bg3);
       padding: 6px 4px;
@@ -1578,52 +1585,34 @@ function renderSearch(main, rcDiv) {
 }
 
 // ─── SPECS ACCORDION ───
-let _openAccordionRow = null;
-
 function toggleSpecsAccordion(row, item) {
-  // If this row already has an open accordion, close it
+  // If this row already has an open accordion, close it (toggle)
   const existing = row.nextElementSibling;
   if (existing && existing.classList.contains('specs-accordion')) {
     existing.classList.remove('open');
     setTimeout(() => existing.remove(), 350);
-    _openAccordionRow = null;
     return;
-  }
-
-  // Close any other open accordion
-  if (_openAccordionRow) {
-    const prev = _openAccordionRow.nextElementSibling;
-    if (prev && prev.classList.contains('specs-accordion')) {
-      prev.classList.remove('open');
-      setTimeout(() => prev.remove(), 350);
-    }
-    _openAccordionRow = null;
   }
 
   // Build accordion panel
   const accordion = document.createElement('div');
   accordion.className = 'specs-accordion';
 
-  const headers = LAW_KEYS.map(k => {
-    const cls = LAW_CLASSES[k];
-    return `<div class="specs-col-header law-col-${cls}">${LAW_SHORT[k]}</div>`;
-  }).join('');
-
   const cells = LAW_KEYS.map(k => {
+    const cls = LAW_CLASSES[k];
     const isActive = item.laws[k];
     const specVal = item.specs ? item.specs[k] : null;
     let content = '';
     if (specVal) {
       content = specVal.replace(/▶/g, '\n▶').replace(/^\n/, '').replace(/\n/g, '<br>');
     }
-    return `<div class="specs-col${isActive ? '' : ' specs-inactive'}">${content || ''}</div>`;
+    return `<div class="specs-col specs-bar-${cls}${isActive ? '' : ' specs-inactive'}">${content || ''}</div>`;
   }).join('');
 
   accordion.innerHTML = `
     <div class="specs-panel">
       <div class="specs-panel-spacer"></div>
       <div class="specs-panel-grid">
-        ${headers}
         ${cells}
       </div>
     </div>
@@ -1636,7 +1625,6 @@ function toggleSpecsAccordion(row, item) {
       accordion.classList.add('open');
     });
   });
-  _openAccordionRow = row;
 }
 
 // ─── NOTE POPUP ───
