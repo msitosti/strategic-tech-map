@@ -92,6 +92,22 @@
       min-height: 100vh;
     }
 
+    /* ─── NOTICE BANNER ─── */
+    .notice-banner {
+      width: 100%;
+      box-sizing: border-box;
+      background: var(--bg2);
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      font-family: 'Noto Sans KR', sans-serif;
+      padding: 8px 16px;
+      letter-spacing: 0.3px;
+      line-height: 1.5;
+    }
+
     /* ─── HEADER ─── */
     header {
       background: var(--header-bg);
@@ -816,6 +832,13 @@
     }
 
     @media (max-width: 768px) {
+      /* Notice banner mobile */
+      .notice-banner {
+        font-size: 22px;
+        font-weight: 700;
+        padding: 6px 12px;
+      }
+
       /* Prevent horizontal overflow globally */
       html, body { overflow-x: hidden; max-width: 100vw; }
 
@@ -1416,6 +1439,8 @@
   </style>
 </head>
 <body>
+
+<div class="notice-banner">현황맵은 현재 시범 운영 중으로 기능 개선 및 오류 보완 후 공식적으로 오픈될 예정입니다.</div>
 
 <header>
   <div class="header-title" onclick="goHome()">
