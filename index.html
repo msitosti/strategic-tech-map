@@ -273,6 +273,27 @@
       opacity: 0.7;
     }
 
+    .law-detail-btn {
+      font-size: 11px;
+      padding: 2px 7px;
+      border: 1px solid currentColor;
+      border-radius: 4px;
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+      line-height: 1.4;
+    }
+    .law-detail-btn:hover {
+      opacity: 1;
+    }
+    .law-detail-btn-a { color: var(--law-a-text); border-color: var(--law-a-text); }
+    .law-detail-btn-b { color: var(--law-b-text); border-color: var(--law-b-text); }
+    .law-detail-btn-c { color: var(--law-c-text); border-color: var(--law-c-text); }
+    .law-detail-btn-d { color: var(--law-d-text); border-color: var(--law-d-text); }
+    .law-detail-btn-e { color: var(--law-e-text); border-color: var(--law-e-text); }
+
     /* Sector list */
     .sector-list { display: flex; flex-direction: column; gap: 2px; }
 
@@ -551,6 +572,25 @@
       overflow: hidden;
     }
 
+    .subsector-toggle-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      text-align: center;
+      font-size: 11px;
+      margin-left: 8px;
+      border-radius: 4px;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .subsector-toggle-arrow:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(56,189,248,0.1);
+    }
     .subsector-title {
       background: var(--bg3);
       padding: 12px 20px;
@@ -1440,11 +1480,135 @@
       color: var(--text-dim);
       font-style: italic;
     }
+
+    /* ─── SPEC TITLE LINK (clickable tech name in accordion) ─── */
+    .spec-title-link {
+      cursor: pointer;
+      color: var(--accent);
+      text-decoration: none;
+      transition: all 0.15s;
+      display: inline-block;
+      margin-bottom: 2px;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 1px;
+    }
+    .spec-title-link:hover {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+    }
+
+    .spec-title-plain {
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+    .spec-title-link:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .spec-title-plain:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    /* ─── LAW DETAIL MODAL CONTENT ─── */
+    .law-section { margin-bottom: 20px; }
+    .law-section-heading {
+      font-size: 14px; font-weight: 700; color: var(--accent);
+      margin-bottom: 8px; padding-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .law-section-content {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text);
+      padding: 4px 0;
+    }
+
+    .law-fields-table {
+      width: 100%; border-collapse: collapse; margin: 12px 0;
+      font-size: 12px; text-align: center;
+    }
+    .law-fields-table td {
+      border: 1px solid var(--border); padding: 8px 6px;
+      background: transparent; color: var(--text);
+      white-space: pre-line; line-height: 1.4;
+    }
+
+    .law-process-flow {
+      display: flex; align-items: flex-start; gap: 4px;
+      margin: 12px 0; overflow-x: auto; padding: 8px 0;
+      flex-wrap: nowrap;
+    }
+    .law-process-arrow {
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 18px; font-weight: 700;
+      min-width: 24px; padding-top: 8px;
+    }
+    .law-process-step {
+      text-align: center; min-width: 80px; flex-shrink: 0;
+    }
+    .law-process-step-name {
+      font-size: 12px; font-weight: 700; color: var(--text);
+      padding: 6px 10px; border: 1.5px solid var(--accent);
+      border-radius: 6px; margin-bottom: 4px;
+      background: var(--bg3);
+    }
+    .law-process-step-org {
+      font-size: 10px; color: var(--text-dim); line-height: 1.4;
+      white-space: pre-line;
+    }
+
+    .law-tax-section { margin: 12px 0; }
+    .law-tax-title {
+      font-size: 13px; font-weight: 700; color: var(--text);
+      margin-bottom: 8px;
+    }
+    .law-tax-table {
+      width: 100%; border-collapse: collapse; font-size: 12px;
+    }
+    .law-tax-table th {
+      background: var(--bg3); color: var(--accent); font-weight: 600;
+      padding: 6px 8px; border: 1px solid var(--border); text-align: center;
+    }
+    .law-tax-table td {
+      padding: 6px 8px; border: 1px solid var(--border);
+      text-align: center; color: var(--text);
+    }
+    .law-fields-table td.law-fields-category {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--accent);
+      background: var(--bg3);
+      vertical-align: middle;
+      text-align: center;
+      min-width: 120px;
+      border: 1px solid var(--border);
+      border-right: 2px solid var(--accent);
+    }
+    .law-tax-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .law-tax-grid .law-tax-table {
+      flex: 1;
+      min-width: 250px;
+    }
+    .law-tax-label {
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .law-tax-note {
+      font-size: 11px; color: var(--text-dim); margin-bottom: 10px;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
 
-<div class="notice-banner"><span class="notice-desktop">현황맵은 현재 시범 운영 중으로 기능 개선 및 오류 보완 후 오픈될 예정입니다.</span><span class="notice-mobile">현황맵은 현재 시범 운영 중으로 기능 개선 및<br>오류 보완 후 오픈될 예정입니다.</span></div>
 
 <header>
   <div class="header-title" onclick="goHome()">
@@ -1453,12 +1617,16 @@
   </div>
   <div class="header-stats">
     <div class="hstat">
+      <div class="hstat-num" id="h-laws">5</div>
+      <div class="hstat-label">분류체계</div>
+    </div>
+    <div class="hstat">
       <div class="hstat-num" id="h-sectors">19</div>
       <div class="hstat-label">전략기술 분야</div>
     </div>
     <div class="hstat">
-      <div class="hstat-num" id="h-laws">5</div>
-      <div class="hstat-label">분류체계</div>
+      <div class="hstat-num" id="h-subsectors">—</div>
+      <div class="hstat-label">중점기술</div>
     </div>
     <div class="hstat">
       <div class="hstat-num" id="h-techs">—</div>
@@ -1529,12 +1697,14 @@ let state = {
   view: 'overview',
   activeLaws: new Set(['strategic','tax_strategic','tax_growth','advanced','protection']),
   activeSector: null,
-  searchQuery: ''
+  searchQuery: '',
+  prevView: null
 };
 
 const LAW_KEYS = ['strategic','tax_strategic','tax_growth','advanced','protection'];
 const LAW_CLASSES = { strategic:'a', tax_strategic:'b', tax_growth:'c', advanced:'d', protection:'e' };
-const LAW_SHORT = { strategic:'전략기술육성법', tax_strategic:'조특-전략', tax_growth:'조특-신성장', advanced:'첨단전략산업법', protection:'산업기술보호법' };
+const LAW_SHORT = { strategic:'국가전략기술육성법', tax_strategic:'조세특례제한법-전략', tax_growth:'조세특례제한법-신성장', advanced:'국가첨단전략산업법', protection:'산업기술보호법' };
+const LAW_LONG  = { strategic:'국가전략기술육성법', tax_strategic:'조세특례제한법-국가전략기술', tax_growth:'조세특례제한법-신성장원천기술', advanced:'국가첨단전략산업법', protection:'산업기술보호법' };
 
 // Count total techs
 function countTechs() {
@@ -1611,6 +1781,8 @@ window.addEventListener('popstate', function(e) {
 // ─── INIT ───
 function init() {
   document.getElementById('h-techs').textContent = countTechs();
+  const totalSubsectors = TECH_DATA.sectors.reduce((sum, s) => sum + (s.subsectors ? s.subsectors.length : 0), 0);
+  document.getElementById('h-subsectors').textContent = totalSubsectors;
   buildLawFilters();
   buildSectorNav();
 
@@ -1636,6 +1808,13 @@ function init() {
   });
 }
 
+function getFilterDisplayName(law) {
+  if (law.id === 'tax_strategic' || law.id === 'tax_growth') {
+    return '조세특례제한법';
+  }
+  return law.short;
+}
+
 function buildLawFilters() {
   const container = document.getElementById('law-filters');
   container.innerHTML = '';
@@ -1650,11 +1829,12 @@ function buildLawFilters() {
     el.className = `law-chip ${isActive ? 'active-'+cls : 'inactive'}`;
     el.innerHTML = `
       <div class="law-dot" style="background:${getLawColor(k)}"></div>
-      <div style="line-height:1.3">
-        <div style="font-weight:700;font-size:11px">${law.short}</div>
+      <div style="line-height:1.3;flex:1;min-width:0">
+        <div style="font-weight:700;font-size:11px">${getFilterDisplayName(law)}</div>
         <div style="font-size:10px;opacity:0.7">${law.sub}</div>
       </div>
       <div class="law-chip-count">${count}</div>
+      <button class="law-detail-btn law-detail-btn-${cls}" data-law-id="${k}" onclick="event.stopPropagation();openLawModal('${k}')">상세보기</button>
     `;
     el.onclick = () => {
       if (state.activeLaws.has(k)) {
@@ -1686,6 +1866,7 @@ function buildSectorNav() {
     el.style.opacity = visible ? '1' : '0.3';
     el.onclick = () => {
       pushHistoryState();
+      state.prevView = state.view;
       if (state.activeSector === s.id) {
         state.activeSector = null;
       } else {
@@ -1708,6 +1889,12 @@ function buildSectorNav() {
   const label = filterSection.querySelector('.sidebar-label');
   const list = filterSection.querySelector('.law-filter');
   if (!label || !list) return;
+
+  // 모바일 초기 상태: 펼쳐진 상태로 시작
+  if (window.innerWidth <= 768) {
+    label.classList.add('filter-open');
+    list.classList.add('filter-open');
+  }
 
   label.addEventListener('click', function(e) {
     if (window.innerWidth > 768) return;
@@ -1780,7 +1967,7 @@ function render() {
     const tag = document.createElement('span');
     const cls = LAW_CLASSES[k];
     tag.className = `tag tag-${cls}`;
-    tag.textContent = LAW_SHORT[k];
+    tag.textContent = LAW_LONG[k];
     tag.onclick = () => {
       if (state.activeLaws.size > 1) {
         state.activeLaws.delete(k);
@@ -1832,6 +2019,7 @@ function renderOverview(main, rcDiv) {
     `;
     card.onclick = () => {
       pushHistoryState();
+      state.prevView = state.view;
       state.activeSector = s.id;
       buildSectorNav();
       render();
@@ -1850,7 +2038,7 @@ function renderDetail(main, rcDiv) {
   const coverage = sectorLawCoverage(sector);
   const badges = LAW_KEYS.filter(k => coverage.has(k)).map(k => {
     const cls = LAW_CLASSES[k];
-    return `<span class="law-badge tl-${cls}">${LAW_SHORT[k]}</span>`;
+    return `<span class="law-badge tl-${cls}">${LAW_LONG[k]}</span>`;
   }).join('');
 
   main.innerHTML = `
@@ -1861,13 +2049,13 @@ function renderDetail(main, rcDiv) {
           <div class="sector-header-name">No.${sector.id} ${sector.name}</div>
           <div class="law-badges">${badges}</div>
         </div>
-        <button class="back-btn" onclick="history.back()">← 목록</button>
+        <button class="back-btn" onclick="goBackToList()">← 목록</button>
       </div>
       <div class="sector-law-grid">
         ${LAW_KEYS.map(k => {
           const val = sector.laws[k];
           return `<div class="sector-law-grid-item">
-            <span class="law-name" style="color:${getLawColor(k)}">${LAW_SHORT[k]}</span>
+            <span class="law-name" style="color:${getLawColor(k)}">${LAW_LONG[k]}</span>
             <span class="law-scope">${val || '-'}</span>
           </div>`;
         }).join('')}
@@ -1886,6 +2074,7 @@ function renderDetail(main, rcDiv) {
       <div class="subsector-title">
         <span>▸</span>${ss.name}
         <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--text-dim)">${visibleItems.length}개</span>
+        <span class="subsector-toggle-arrow" style="cursor:pointer;user-select:none;" title="전체 펼침/접힘">▼</span>
       </div>
       <div class="subsector-items"></div>
     `;
@@ -1920,6 +2109,46 @@ function renderDetail(main, rcDiv) {
       }
       itemsContainer.appendChild(row);
     });
+    // 중점기술 제목 클릭 → 하위 세부기술 전체 아코디언 펼침/접힘
+    const arrow = block.querySelector('.subsector-toggle-arrow');
+    let allExpanded = false;
+    arrow.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const items = block.querySelector('.subsector-items');
+      const rows = items.querySelectorAll('.tech-row');
+
+      if (allExpanded) {
+        // 모두 접기: 열려있는 아코디언 모두 제거
+        items.querySelectorAll('.specs-accordion').forEach(acc => {
+          acc.classList.remove('open');
+          setTimeout(() => acc.remove(), 350);
+        });
+        arrow.textContent = '▼';
+        allExpanded = false;
+      } else {
+        // 모두 펼치기: 아코디언이 없는 tech-row에 대해 열기
+        rows.forEach(row => {
+          const next = row.nextElementSibling;
+          const hasAccordion = next && next.classList.contains('specs-accordion');
+          if (!hasAccordion) {
+            const nameEl = row.querySelector('.tech-name-link');
+            if (nameEl) {
+              const itemName = nameEl.textContent;
+              const matchedItem = visibleItems.find(it => it.name === itemName);
+              if (matchedItem) {
+                const hasSpecs = matchedItem.specs && LAW_KEYS.some(k => matchedItem.specs[k]);
+                if (hasSpecs) {
+                  toggleSpecsAccordion(row, matchedItem);
+                }
+              }
+            }
+          }
+        });
+        arrow.textContent = '▲';
+        allExpanded = true;
+      }
+    });
+
     container.appendChild(block);
   });
 }
@@ -1943,7 +2172,7 @@ function renderMatrix(main, rcDiv) {
     }).join('');
     const cnt = s.subsectors.reduce((a, ss) => a + ss.items.filter(i => techMatchesFilter(i)).length, 0);
     rows += `
-      <tr style="cursor:pointer" onclick="pushHistoryState();state.activeSector=${s.id};state.view='overview';buildSectorNav();render()">
+      <tr style="cursor:pointer" onclick="pushHistoryState();state.prevView='matrix';state.activeSector=${s.id};state.view='overview';buildSectorNav();render()">
         <td class="sector-td">${s.icon} ${s.name}</td>
         ${cells}
         <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);text-align:center">${cnt}</td>
@@ -2016,7 +2245,7 @@ function renderStats(main, rcDiv) {
   const bubbles = sectorCoverage.map(s => {
     const size = 24 + (s.techCount / maxTech) * 40;
     return `
-      <div class="bubble" onclick="pushHistoryState();state.activeSector=${s.id};state.view='overview';buildSectorNav();render()" title="${s.name}: ${s.techCount}개 세부기술, ${s.lawCount}개 법령">
+      <div class="bubble" onclick="pushHistoryState();state.prevView='stats';state.activeSector=${s.id};state.view='overview';buildSectorNav();render()" title="${s.name}: ${s.techCount}개 세부기술, ${s.lawCount}개 법령">
         <div class="bubble-circle" style="width:${size}px;height:${size}px;border-color:${getLawColor(LAW_KEYS[s.lawCount-1]||'strategic')};background:${getLawColor(LAW_KEYS[s.lawCount-1]||'strategic')}22">${s.techCount}</div>
         <div class="bubble-name">${s.icon} ${s.name}</div>
       </div>
@@ -2027,7 +2256,7 @@ function renderStats(main, rcDiv) {
   const both = {};
   LAW_KEYS.forEach((k1,i) => LAW_KEYS.slice(i+1).forEach(k2 => {
     const cnt = TECH_DATA.sectors.reduce((a,s) => a + s.subsectors.reduce((a2,ss) => a2 + ss.items.filter(i=>i.laws[k1]&&i.laws[k2]).length, 0), 0);
-    if (cnt > 0) both[`${LAW_SHORT[k1]} + ${LAW_SHORT[k2]}`] = cnt;
+    if (cnt > 0) both[`${LAW_LONG[k1]} + ${LAW_LONG[k2]}`] = cnt;
   }));
   const overlapSorted = Object.entries(both).sort((a,b)=>b[1]-a[1]).slice(0,6);
   const maxOverlap = overlapSorted.length > 0 ? overlapSorted[0][1] : 1;
@@ -2186,6 +2415,191 @@ function renderSearch(main, rcDiv) {
   main.appendChild(container);
 }
 
+// ─── SPEC TEXT PARSER (기술명 축약 + 팝업 상세보기) ───
+
+// ▶(세부기술명) 설명 파싱 - 중첩 괄호 지원
+function parseBulletLine(line) {
+  if (!line.startsWith('▶(')) return null;
+
+  let depth = 0;
+  let nameEnd = -1;
+  for (let i = 1; i < line.length; i++) {
+    if (line[i] === '(') depth++;
+    else if (line[i] === ')') {
+      depth--;
+      if (depth === 0) {
+        nameEnd = i;
+        break;
+      }
+    }
+  }
+
+  if (nameEnd < 0) return null;
+
+  const subName = line.substring(2, nameEnd); // 괄호 안 내용
+  const subDesc = line.substring(nameEnd + 1).trim();
+  return { subName, subDesc };
+}
+
+// 스펙 텍스트를 "기술명"과 "전체 설명"으로 분리하여 HTML 생성
+function formatSpecContent(specVal, lawKey) {
+  if (!specVal) return '';
+
+  // ── strategic(국가전략기술육성법) 전용 처리 ──
+  if (lawKey === 'strategic') {
+    const lines = specVal.split('\n');
+
+    // Step 1: <분야> 헤더 분리
+    let header = null;
+    let contentLines = lines;
+    if (lines.length > 0 && /^<[^>]+>\s*$/.test(lines[0].trim())) {
+      header = lines[0].trim();
+      contentLines = lines.slice(1);
+    }
+
+    if (contentLines.length === 0) return '';
+
+    // Step 2: ▶ 이전의 행들을 합쳐서 타이틀 라인 재구성
+    // (괄호 리스트가 줄바꿈되어 여러 행에 걸친 경우 대응)
+    let titleLineRaw = '';
+    let bulletStartIdx = 0;
+    for (let i = 0; i < contentLines.length; i++) {
+      if (contentLines[i].trim().startsWith('▶')) {
+        bulletStartIdx = i;
+        break;
+      }
+      titleLineRaw += (i > 0 ? ' ' : '') + contentLines[i].trim();
+      bulletStartIdx = i + 1;
+    }
+
+    const firstLine = titleLineRaw;
+    const colonIdx = findMainColon(firstLine);
+
+    if (colonIdx > 0) {
+      const titleWithSubs = firstLine.substring(0, colonIdx).trim();
+      const descAfterColon = firstLine.substring(colonIdx + 1).trim();
+
+      // 순수 기술명 (첫 번째 괄호 앞까지)
+      const parenIdx = titleWithSubs.indexOf('(');
+      const pureName = parenIdx > 0 ? titleWithSubs.substring(0, parenIdx).trim() : titleWithSubs;
+
+      // 기술명설명에서 "(기술명) " 접두어 제거
+      const mainDesc = descAfterColon.replace(/^\([^)]*\)\s*/, '');
+
+      // 표시용 제목: 헤더가 있으면 "<분야>\n기술명"
+      const displayTitle = header ? header + '\n' + pureName + ' 기술 中' : pureName + ' 기술 中';
+
+      const parts = [];
+      // 기술명 항목
+      parts.push({
+        title: displayTitle,
+        fullText: mainDesc,
+        hasDetail: mainDesc.length > 0
+      });
+
+      // ▶ 불릿 항목들
+      for (let i = bulletStartIdx; i < contentLines.length; i++) {
+        const line = contentLines[i].trim();
+        if (!line) continue;
+
+        const parsed = parseBulletLine(line);
+        if (parsed) {
+          parts.push({
+            title: '▶' + parsed.subName,
+            fullText: parsed.subDesc,
+            hasDetail: parsed.subDesc.length > 0
+          });
+        } else if (line.startsWith('▶')) {
+          // 괄호 없는 ▶ 불릿
+          parts.push({ title: line, fullText: line, hasDetail: false });
+        }
+        // ▶로 시작하지 않는 행은 무시 (이전 항목의 continuation)
+      }
+
+      return parts;
+    }
+    // 콜론이 없으면 아래 기존 로직으로 fallthrough
+  }
+
+  // ── 기존 로직 (조특법 등 다른 법령용) ──
+  const normalized = specVal.replace(/▶/g, '\n▶').replace(/^\n/, '');
+  const rawLines = normalized.split('\n').filter(l => l.trim());
+
+  if (rawLines.length === 0) return '';
+
+  // Step 1: 섹션 헤더(<xxx>) 감지 및 분리
+  // <xxx 분야> 등의 헤더는 별도 라벨로 취급하고, 뒤따르는 행들을 실제 콘텐츠로 처리
+  const processedLines = [];
+  let currentHeader = null;
+
+  for (let i = 0; i < rawLines.length; i++) {
+    const trimmed = rawLines[i].trim();
+    // <xxx> 패턴으로만 이루어진 행 = 섹션 헤더
+    if (/^<[^>]+>\s*$/.test(trimmed)) {
+      currentHeader = trimmed;
+      continue; // 헤더 자체는 별도 항목으로 만들지 않음
+    }
+    // 헤더가 있으면 현재 행 앞에 붙임
+    if (currentHeader) {
+      processedLines.push({ text: trimmed, header: currentHeader });
+      currentHeader = null;
+    } else {
+      processedLines.push({ text: trimmed, header: null });
+    }
+  }
+
+  // Step 2: ▶ 기준 그룹핑 (▶로 시작하지 않는 연속 행은 이전 그룹에 병합)
+  const groups = [];
+  for (let i = 0; i < processedLines.length; i++) {
+    const item = processedLines[i];
+    if (item.text.startsWith('▶') || groups.length === 0) {
+      groups.push({ text: item.text, header: item.header });
+    } else {
+      // 이전 그룹에 병합
+      groups[groups.length - 1].text += '\n' + item.text;
+    }
+  }
+
+  // Step 3: 각 그룹에서 콜론 기준으로 기술명/설명 분리
+  const parts = groups.map(group => {
+    const firstLine = group.text.split('\n')[0];
+    const colonIdx = findMainColon(firstLine);
+    const headerPrefix = group.header ? group.header + '\n' : '';
+
+    if (colonIdx > 0) {
+      const title = firstLine.substring(0, colonIdx).trim();
+      const displayTitle = headerPrefix ? headerPrefix + title : title;
+      const fullText = group.text;
+      return { title: displayTitle, fullText, hasDetail: true };
+    } else {
+      const displayTitle = headerPrefix ? headerPrefix + group.text : group.text;
+      return { title: displayTitle, fullText: group.text, hasDetail: false };
+    }
+  });
+
+  return parts;
+}
+
+// 메인 콜론 위치 찾기: "기술명: 설명" 패턴의 구분 콜론
+function findMainColon(text) {
+  let depth = 0;
+  for (let i = 0; i < text.length - 1; i++) {
+    const ch = text[i];
+    if (ch === '(' || ch === '（' || ch === '[' || ch === '［') depth++;
+    else if (ch === ')' || ch === '）' || ch === ']' || ch === '］') depth--;
+    else if (ch === ':' || ch === '：') {
+      if (depth === 0 && i > 5) {
+        const next = text[i + 1];
+        // 일반 공백, 전각 공백, 줄바꿈, 또는 문자열 끝 모두 허용
+        if (next === ' ' || next === '\u3000' || next === '\n' || next === '\r' || next === undefined) {
+          return i;
+        }
+      }
+    }
+  }
+  return -1;
+}
+
 // ─── SPECS ACCORDION ───
 function toggleSpecsAccordion(row, item) {
   const isMobile = window.innerWidth <= 768;
@@ -2215,9 +2629,22 @@ function toggleSpecsAccordion(row, item) {
     const isActive = item.laws[k];
     const specVal = item.specs ? item.specs[k] : null;
     let content = '';
+
     if (specVal) {
-      content = specVal.replace(/▶/g, '\n▶').replace(/^\n/, '').replace(/\n/g, '<br>');
+      const parts = formatSpecContent(specVal, k);
+      if (Array.isArray(parts)) {
+        content = parts.map((p, idx) => {
+          if (p.hasDetail) {
+            return `<span class="spec-title-link" data-spec-idx="${idx}" data-law="${k}">${p.title.replace(/\n/g, '<br>')}</span>`;
+          } else {
+            return `<span class="spec-title-plain">${p.title}</span>`;
+          }
+        }).join('<br>');
+      } else {
+        content = parts;
+      }
     }
+
     return `<div class="specs-col specs-bar-${cls}${isActive ? '' : ' specs-inactive'}">${content || ''}</div>`;
   }).join('');
 
@@ -2229,6 +2656,34 @@ function toggleSpecsAccordion(row, item) {
       </div>
     </div>
   `;
+
+  // 기술명 클릭 → 팝업으로 상세 설명 표시
+  accordion.querySelectorAll('.spec-title-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const lawKey = link.getAttribute('data-law');
+      const idx = parseInt(link.getAttribute('data-spec-idx'));
+      const specVal = item.specs[lawKey];
+      const parts = formatSpecContent(specVal, lawKey);
+      if (parts && parts[idx]) {
+        const p = parts[idx];
+        // fullText의 첫 번째 줄에서 findMainColon으로 콜론 위치를 찾아 설명만 추출
+        const firstLine = p.fullText.split('\n')[0];
+        const colonIdx = findMainColon(firstLine);
+        let bodyText = p.fullText;
+        if (colonIdx > 0) {
+          // 콜론 + 공백 이후부터 추출 (첫 번째 줄의 콜론 이후 + 나머지 줄 전체)
+          const afterColon = firstLine.substring(colonIdx + 1).replace(/^[\s\u3000]+/, '');
+          const remainingLines = p.fullText.split('\n').slice(1).join('\n');
+          bodyText = remainingLines ? afterColon + '\n' + remainingLines : afterColon;
+        }
+        // "(기술명) " 접두어 제거: 본문 시작이 "(xxx) "인 경우 제거
+        bodyText = bodyText.replace(/^\([^)]+\)\s*/, '');
+        const popupTitle = p.title.replace(/ 기술 中$/m, '');
+        showNotePopup(popupTitle, bodyText);
+      }
+    });
+  });
 
   row.parentNode.insertBefore(accordion, row.nextSibling);
   // Trigger reflow then open
@@ -2265,6 +2720,19 @@ document.getElementById('note-popup-close').addEventListener('click', hideNotePo
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') hideNotePopup();
 });
+
+// ─── BACK TO LIST ───
+function goBackToList() {
+  const prevView = state.prevView || 'overview';
+  state.activeSector = null;
+  state.view = prevView;
+  state.prevView = null;
+  buildSectorNav();
+  render();
+  document.querySelectorAll('.view-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['overview','matrix','stats'][i] === state.view);
+  });
+}
 
 // ─── HOME NAVIGATION ───
 function goHome() {
@@ -2305,7 +2773,253 @@ function toggleTheme() {
   applyTheme(saved);
 })();
 
+// ─── LAW DETAIL MODAL ───
+const LAW_LINKS = {
+  strategic: {
+    law:    "https://www.law.go.kr/법령/국가전략기술육성에관한특별법",
+    decree: "https://www.law.go.kr/법령/국가전략기술육성에관한특별법시행령",
+    rule:   null
+  },
+  tax_strategic: {
+    law:    "https://www.law.go.kr/법령/조세특례제한법",
+    decree: "https://www.law.go.kr/법령/조세특례제한법시행령",
+    rule:   "https://www.law.go.kr/법령/조세특례제한법시행규칙"
+  },
+  tax_growth: {
+    law:    "https://www.law.go.kr/법령/조세특례제한법",
+    decree: "https://www.law.go.kr/법령/조세특례제한법시행령",
+    rule:   "https://www.law.go.kr/법령/조세특례제한법시행규칙"
+  },
+  advanced: {
+    law:    "https://www.law.go.kr/법령/국가첨단전략산업경쟁력강화및보호에관한특별조치법",
+    decree: "https://www.law.go.kr/법령/국가첨단전략산업경쟁력강화및보호에관한특별조치법시행령",
+    rule:   "https://www.law.go.kr/법령/국가첨단전략산업경쟁력강화및보호에관한특별조치법시행규칙"
+  },
+  protection: {
+    law:    "https://www.law.go.kr/법령/산업기술의유출방지및보호에관한법률",
+    decree: "https://www.law.go.kr/법령/산업기술의유출방지및보호에관한법률시행령",
+    rule:   "https://www.law.go.kr/법령/산업기술의유출방지및보호에관한법률시행규칙"
+  }
+};
+
+function openLawModal(lawId) {
+  const law = TECH_DATA.meta.laws.find(l => l.id === lawId);
+  if (!law) return;
+
+  const detail = LAW_DETAILS[lawId];
+  if (!detail) return;
+
+  document.getElementById('law-modal-title').textContent = detail.title;
+
+  // 법령 링크 설정
+  const links = LAW_LINKS[lawId] || {};
+  const lawLink = document.getElementById('law-modal-law-link');
+  const decreeLink = document.getElementById('law-modal-decree-link');
+  const ruleLink = document.getElementById('law-modal-rule-link');
+  if (lawLink) lawLink.href = links.law || '#';
+  if (decreeLink) decreeLink.href = links.decree || '#';
+  if (ruleLink) {
+    if (links.rule) { ruleLink.href = links.rule; ruleLink.style.display = 'inline'; }
+    else { ruleLink.style.display = 'none'; }
+  }
+
+  // 본문 HTML 생성
+  const bodyEl = document.getElementById('law-modal-body');
+  let html = '';
+
+  // 섹션별 렌더링
+  detail.sections.forEach(sec => {
+    html += `<div class="law-section">`;
+    html += `<div class="law-section-heading">${sec.heading}</div>`;
+    html += `<div class="law-section-content">${formatLawContent(sec.content)}</div>`;
+    html += `</div>`;
+
+    // "지정현황" 뒤에 분야명 표 삽입
+    if ((sec.heading === '지정현황' || sec.heading === '지정 현황') && detail.fieldsTable) {
+      html += renderFieldsTable(detail.fieldsTable);
+    }
+
+    // "기술선정" 관련 섹션 뒤에 절차 프로세스 삽입
+    if (sec.heading.includes('기술선정') && detail.processTable) {
+      html += renderProcessTable(detail.processTable);
+    }
+
+    // "주요 지원 현황" 뒤에 세액공제 표 삽입 (조특법만)
+    if (sec.heading.includes('주요 지원') && detail.taxTable) {
+      html += renderTaxTable(detail.taxTable);
+    }
+  });
+
+  bodyEl.innerHTML = html;
+
+  const overlay = document.getElementById('law-modal-overlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+// 텍스트 포맷팅 (줄바꿈, 불릿, 들여쓰기)
+function formatLawContent(text) {
+  // HTML 이스케이프
+  let escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // 줄 단위로 분리하여 들여쓰기 적용
+  const lines = escaped.split('\n');
+  const formatted = lines.map(line => {
+    const trimmed = line.trim();
+    if (!trimmed) return '<div style="height:6px;"></div>'; // 빈 줄 = 간격
+
+    // 들여쓰기 레벨 판별
+    let indent = 0;
+    let styledLine = trimmed;
+
+    if (trimmed.startsWith('▶')) {
+      // 최상위: 들여쓰기 없음, ▶ 강조
+      indent = 0;
+      styledLine = trimmed.replace(/▶/g, '<span style="color:var(--accent);font-weight:600;">▶</span>');
+    } else if (trimmed.startsWith('•') || trimmed.startsWith('·')) {
+      // 1단계
+      indent = 14;
+    } else if (trimmed.startsWith('※')) {
+      // 2단계
+      indent = 24;
+    } else if (trimmed.startsWith('*')) {
+      // 2단계 (* 로 시작)
+      indent = 24;
+    } else if (/^\d+\)/.test(trimmed)) {
+      // 번호 리스트 (1), 2) 등)
+      indent = 24;
+    } else {
+      // 기본: continuation
+      indent = 0;
+    }
+
+    // ▲ 강조 처리
+    styledLine = styledLine.replace(/▲/g, '<span style="color:var(--accent);">▲</span>');
+
+    return `<div style="padding-left:${indent}px;margin-bottom:3px;">${styledLine}</div>`;
+  }).join('');
+
+  return formatted;
+}
+
+// 분야명 표 렌더링
+function renderFieldsTable(table) {
+  // 카테고리별 병합 구조가 있는 경우 (조특법)
+  if (table.categories) {
+    let html = '<table class="law-fields-table">';
+    table.categories.forEach(cat => {
+      cat.rows.forEach((row, rowIdx) => {
+        html += '<tr>';
+        if (rowIdx === 0) {
+          html += `<td class="law-fields-category" rowspan="${cat.rowspan}">${cat.name}</td>`;
+        }
+        row.forEach(cell => {
+          html += `<td>${(cell || '').replace(/\n/g, '<br>')}</td>`;
+        });
+        html += '</tr>';
+      });
+    });
+    html += '</table>';
+    return html;
+  }
+
+  // 단순 표 구조 (다른 법령)
+  let html = '<table class="law-fields-table">';
+  table.rows.forEach(row => {
+    html += '<tr>';
+    row.forEach(cell => {
+      html += `<td>${(cell || '').replace(/\n/g, '<br>')}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</table>';
+  return html;
+}
+
+// 절차 프로세스 렌더링 (화살표 플로우)
+function renderProcessTable(table) {
+  let html = '<div class="law-process-flow">';
+  table.steps.forEach((s, i) => {
+    if (i > 0) html += '<div class="law-process-arrow">→</div>';
+    html += `<div class="law-process-step">`;
+    html += `<div class="law-process-step-name">${s.step}</div>`;
+    html += `<div class="law-process-step-org">${(s.org || '').replace(/\n/g, '<br>')}</div>`;
+    html += `</div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+// 세액공제 표 렌더링 (조특법)
+function renderTaxTable(table) {
+  let html = '<div class="law-tax-section">';
+
+  html += '<div class="law-tax-title">' + table.title + '</div>';
+  html += '<div class="law-tax-grid">';
+
+  // ── R&D 세액공제 표 ──
+  html += '<table class="law-tax-table">';
+  html += '<thead><tr>';
+  html += '<th>R&D(%)</th><th>대</th><th>중견</th><th>중소</th>';
+  html += '</tr></thead><tbody>';
+  html += '<tr><td class="law-tax-label">일반</td><td>2</td><td>8</td><td>25</td></tr>';
+  html += '<tr><td class="law-tax-label">신성장·원천기술</td><td colspan="2">20~30</td><td>30~40</td></tr>';
+  html += '<tr><td class="law-tax-label">국가전략기술</td><td colspan="2">30~40</td><td>40~50</td></tr>';
+  html += '</tbody></table>';
+
+  // ── 시설투자 세액공제 표 ──
+  html += '<table class="law-tax-table">';
+  html += '<thead>';
+  html += '<tr><th rowspan="2">시설투자(%)</th><th colspan="3">당기분</th><th rowspan="2">증가분</th></tr>';
+  html += '<tr><th>대</th><th>중견</th><th>중소</th></tr>';
+  html += '</thead><tbody>';
+  html += '<tr><td class="law-tax-label">일반</td><td>1</td><td>5</td><td>10</td><td rowspan="3">10</td></tr>';
+  html += '<tr><td class="law-tax-label">신성장·원천기술</td><td>3</td><td>6</td><td>12</td></tr>';
+  html += '<tr><td class="law-tax-label">국가전략기술<sup>▲</sup></td><td colspan="2">15</td><td>25</td></tr>';
+  html += '</tbody></table>';
+
+  html += '</div>';
+
+  if (table.note) {
+    html += '<div class="law-tax-note">' + formatLawContent(table.note) + '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+function closeLawModal() {
+  document.getElementById('law-modal-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLawModal();
+});
+
 init();
 </script>
+
+<!-- 법령 상세보기 모달 -->
+<div id="law-modal-overlay" onclick="closeLawModal()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center;">
+  <div id="law-modal-box" onclick="event.stopPropagation()" style="background:var(--bg2); color:var(--text); border:1px solid var(--border); border-radius:14px; max-width:700px; width:90vw; max-height:90vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    <div id="law-modal-header" style="display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--bg2); border-radius:14px 14px 0 0; z-index:1;">
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <span id="law-modal-title" style="font-size:16px; font-weight:700; color:var(--accent);"></span>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a id="law-modal-law-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:var(--accent); text-decoration:underline;">법 바로가기</a>
+          <a id="law-modal-decree-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:var(--accent); text-decoration:underline;">시행령 바로가기</a>
+          <a id="law-modal-rule-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:var(--accent); text-decoration:underline; display:none;">시행규칙 바로가기</a>
+        </div>
+      </div>
+      <button onclick="closeLawModal()" style="background:none; border:none; font-size:22px; cursor:pointer; color:var(--text-dim); line-height:1; padding:0 4px; align-self:flex-start;">✕</button>
+    </div>
+    <div id="law-modal-body" style="padding:20px;"></div>
+  </div>
+</div>
+
 </body>
 </html>
