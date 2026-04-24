@@ -242,7 +242,7 @@
     .law-chip {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 5px;
       padding: 8px 10px;
       border-radius: 8px;
       border: 1px solid transparent;
@@ -293,6 +293,65 @@
     .law-detail-btn-c { color: var(--law-c-text); border-color: var(--law-c-text); }
     .law-detail-btn-d { color: var(--law-d-text); border-color: var(--law-d-text); }
     .law-detail-btn-e { color: var(--law-e-text); border-color: var(--law-e-text); }
+
+    /* 두 줄 텍스트 대응 + 두 버튼 높이 완전 동일화 */
+    .law-detail-btn,
+    .law-scope-btn {
+      font-size: 10.5px;
+      padding: 3px 8px;
+      line-height: 1.25;
+      font-family: inherit;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 34px;
+      border: 1px solid currentColor;
+      border-radius: 4px;
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+      opacity: 0.7;
+      transition: opacity 0.15s;
+    }
+    .law-detail-btn:hover,
+    .law-scope-btn:hover { opacity: 1; }
+
+    /* 신규 N대 분야 / N개 기술 외부 링크 버튼 — 추가 속성 */
+    .law-scope-btn {
+      text-decoration: none;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+    .law-scope-btn-a { color: var(--law-a-text); border-color: var(--law-a-text); }
+    .law-scope-btn-b { color: var(--law-b-text); border-color: var(--law-b-text); }
+    .law-scope-btn-c { color: var(--law-c-text); border-color: var(--law-c-text); }
+    .law-scope-btn-d { color: var(--law-d-text); border-color: var(--law-d-text); }
+    .law-scope-btn-e { color: var(--law-e-text); border-color: var(--law-e-text); }
+
+    /* 법명을 한 줄로 강제 (영역이 좁아도 줄바꿈 방지, 부족 시 ellipsis) */
+    .law-chip-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 새 버튼 추가 축소 — 5개 법령 모두 동일 너비 보장하면서 법명 영역 양보 */
+    .law-scope-btn {
+      min-width: 60px;
+      padding-left: 4px;
+      padding-right: 4px;
+      font-size: 9.5px;
+      line-height: 1.15;
+      letter-spacing: -0.3px;
+    }
+
+    /* 법명 폰트 사이즈 추가 조정 — 9글자 법명을 잘림 없이 한 줄에 보장 */
+    .law-chip-name {
+      font-size: 10px !important;
+      letter-spacing: -0.3px;
+    }
 
     /* Sector list */
     .sector-list { display: flex; flex-direction: column; gap: 2px; }
@@ -1703,6 +1762,33 @@ let state = {
 
 const LAW_KEYS = ['strategic','tax_strategic','tax_growth','advanced','protection'];
 const LAW_CLASSES = { strategic:'a', tax_strategic:'b', tax_growth:'c', advanced:'d', protection:'e' };
+const LAW_SCOPE_LINKS = {
+  strategic: {
+    line1: '12대 분야',
+    line2: '50개 기술',
+    url: 'https://www.law.go.kr/LSW//admRulBylInfoPLinkR.do?admRulSeq=2100000236194&admRulNm=%EA%B5%AD%EA%B0%80%EC%A0%84%EB%9E%B5%EA%B8%B0%EC%88%A0%20%EC%A7%80%EC%A0%95%20%EB%93%B1%EC%97%90%20%EA%B4%80%ED%95%9C%20%EA%B3%A0%EC%8B%9C&bylNo=0000&bylBrNo=00&bylCls=BE&bylClsCd=BE&joEfYd=&bylEfYd='
+  },
+  tax_strategic: {
+    line1: '8대 분야',
+    line2: '81개 기술',
+    url: 'https://www.law.go.kr/LSW//lsBylInfoPLinkR.do?lsiSeq=283625&lsNm=%EC%A1%B0%EC%84%B8%ED%8A%B9%EB%A1%80%EC%A0%9C%ED%95%9C%EB%B2%95+%EC%8B%9C%ED%96%89%EB%A0%B9&bylNo=0007&bylBrNo=02&bylCls=BE&bylEfYd=20260401&bylEfYdYn=Y'
+  },
+  tax_growth: {
+    line1: '14대 구분',
+    line2: '284개 기술',
+    url: 'https://www.law.go.kr/LSW//lsBylInfoPLinkR.do?lsiSeq=283625&lsNm=%EC%A1%B0%EC%84%B8%ED%8A%B9%EB%A1%80%EC%A0%9C%ED%95%9C%EB%B2%95+%EC%8B%9C%ED%96%89%EB%A0%B9&bylNo=0007&bylBrNo=00&bylCls=BE&bylEfYd=20260401&bylEfYdYn=Y'
+  },
+  advanced: {
+    line1: '6대 분야',
+    line2: '19개 기술',
+    url: 'https://www.law.go.kr/LSW//admRulBylInfoPLinkR.do?admRulSeq=2100000261400&admRulNm=%EA%B5%AD%EA%B0%80%EC%B2%A8%EB%8B%A8%EC%A0%84%EB%9E%B5%EC%82%B0%EC%97%85%20%EB%B2%94%EC%9C%84%EC%97%90%20%EA%B4%80%ED%95%9C%20%EA%B3%A0%EC%8B%9C&bylNo=0000&bylBrNo=00&bylCls=BE&bylClsCd=BE&joEfYd=&bylEfYd='
+  },
+  protection: {
+    line1: '13개 분야',
+    line2: '79개 기술',
+    url: 'https://www.law.go.kr/LSW//admRulBylInfoPLinkR.do?admRulSeq=2100000272798&admRulNm=%EA%B5%AD%EA%B0%80%ED%95%B5%EC%8B%AC%EA%B8%B0%EC%88%A0%20%EC%A7%80%EC%A0%95%20%EB%93%B1%EC%97%90%20%EA%B4%80%ED%95%9C%20%EA%B3%A0%EC%8B%9C&bylNo=0000&bylBrNo=00&bylCls=BE&bylClsCd=BE&joEfYd=&bylEfYd='
+  }
+};
 const LAW_SHORT = { strategic:'국가전략기술육성법', tax_strategic:'조세특례제한법-전략', tax_growth:'조세특례제한법-신성장', advanced:'국가첨단전략산업법', protection:'산업기술보호법' };
 const LAW_LONG  = { strategic:'국가전략기술육성법', tax_strategic:'조세특례제한법-국가전략기술', tax_growth:'조세특례제한법-신성장원천기술', advanced:'국가첨단전략산업법', protection:'산업기술보호법' };
 
@@ -1821,20 +1907,18 @@ function buildLawFilters() {
   TECH_DATA.meta.laws.forEach(law => {
     const k = law.id;
     const cls = LAW_CLASSES[k];
-    const count = TECH_DATA.sectors.reduce((acc, s) =>
-      acc + s.subsectors.reduce((a2, ss) =>
-        a2 + ss.items.filter(i => i.laws[k]).length, 0), 0);
     const isActive = state.activeLaws.has(k);
+    const scope = LAW_SCOPE_LINKS[k];
     const el = document.createElement('div');
     el.className = `law-chip ${isActive ? 'active-'+cls : 'inactive'}`;
     el.innerHTML = `
       <div class="law-dot" style="background:${getLawColor(k)}"></div>
-      <div style="line-height:1.3;flex:1;min-width:0">
-        <div style="font-weight:700;font-size:11px">${getFilterDisplayName(law)}</div>
-        <div style="font-size:10px;opacity:0.7">${law.sub}</div>
+      <div style="line-height:1.3;flex:1;min-width:0;overflow:hidden">
+        <div class="law-chip-name" style="font-weight:700;font-size:11px">${escapeHtml(getFilterDisplayName(law))}</div>
+        <div style="font-size:10px;opacity:0.7">${escapeHtml(law.sub)}</div>
       </div>
-      <div class="law-chip-count">${count}</div>
-      <button class="law-detail-btn law-detail-btn-${cls}" data-law-id="${k}" onclick="event.stopPropagation();openLawModal('${k}')">상세보기</button>
+      <a class="law-scope-btn law-scope-btn-${cls}" href="${scope.url}" target="_blank" rel="noopener noreferrer" title="법제처 원문 새 창에서 열기" onclick="event.stopPropagation()">${escapeHtml(scope.line1)}<br>${escapeHtml(scope.line2)}</a>
+      <button class="law-detail-btn law-detail-btn-${cls}" data-law-id="${k}" onclick="event.stopPropagation();openLawModal('${k}')">상세<br>보기</button>
     `;
     el.onclick = () => {
       if (state.activeLaws.has(k)) {
@@ -1860,7 +1944,7 @@ function buildSectorNav() {
     const cnt = s.subsectors.reduce((a, ss) => a + ss.items.filter(i => techMatchesFilter(i)).length, 0);
     el.innerHTML = `
       <span class="sector-icon">${s.icon}</span>
-      <span>${s.name}</span>
+      <span>${escapeHtml(s.name)}</span>
       <span class="sector-count">${cnt}</span>
     `;
     el.style.opacity = visible ? '1' : '0.3';
@@ -2012,7 +2096,7 @@ function renderOverview(main, rcDiv) {
     card.innerHTML = `
       <div class="card-id">No.${String(s.id).padStart(2,'0')}</div>
       <div class="card-icon">${s.icon}</div>
-      <div class="card-name">${s.name}</div>
+      <div class="card-name">${escapeHtml(s.name)}</div>
       <div class="card-law-dots">${dots}</div>
       <div class="card-sub-count">세부기술 ${filteredCount}개</div>
       <div class="card-coverage">${coverage.size}/5 법령 적용</div>
@@ -2033,7 +2117,7 @@ function renderDetail(main, rcDiv) {
   if (!sector) return;
 
   const filteredTechs = sector.subsectors.flatMap(ss => ss.items.filter(i => techMatchesFilter(i)));
-  rcDiv.innerHTML = `<strong>${sector.icon} ${sector.name}</strong> · 세부기술 <strong>${filteredTechs.length}</strong>개`;
+  rcDiv.innerHTML = `<strong>${sector.icon} ${escapeHtml(sector.name)}</strong> · 세부기술 <strong>${filteredTechs.length}</strong>개`;
 
   const coverage = sectorLawCoverage(sector);
   const badges = LAW_KEYS.filter(k => coverage.has(k)).map(k => {
@@ -2046,7 +2130,7 @@ function renderDetail(main, rcDiv) {
       <div class="sector-header">
         <div class="sector-header-icon">${sector.icon}</div>
         <div class="sector-header-info">
-          <div class="sector-header-name">No.${sector.id} ${sector.name}</div>
+          <div class="sector-header-name">No.${sector.id} ${escapeHtml(sector.name)}</div>
           <div class="law-badges">${badges}</div>
         </div>
         <button class="back-btn" onclick="goBackToList()">← 목록</button>
@@ -2072,7 +2156,7 @@ function renderDetail(main, rcDiv) {
     block.className = 'subsector-block';
     block.innerHTML = `
       <div class="subsector-title">
-        <span>▸</span>${ss.name}
+        <span>▸</span>${escapeHtml(ss.name)}
         <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--text-dim)">${visibleItems.length}개</span>
         <span class="subsector-toggle-arrow" style="cursor:pointer;user-select:none;" title="전체 펼침/접힘">▼</span>
       </div>
@@ -2090,7 +2174,7 @@ function renderDetail(main, rcDiv) {
           : `<span class="tl-pill tl-empty">${LAW_SHORT[k]}</span>`;
       }).join('');
       row.innerHTML = `
-        <div class="tech-name"><span class="tech-name-link">${item.name}</span></div>
+        <div class="tech-name"><span class="tech-name-link">${escapeHtml(item.name)}</span></div>
         <div class="tech-laws">${pills}</div>
       `;
       // Tech name click → popup only
@@ -2173,7 +2257,7 @@ function renderMatrix(main, rcDiv) {
     const cnt = s.subsectors.reduce((a, ss) => a + ss.items.filter(i => techMatchesFilter(i)).length, 0);
     rows += `
       <tr style="cursor:pointer" onclick="pushHistoryState();state.prevView='matrix';state.activeSector=${s.id};state.view='overview';buildSectorNav();render()">
-        <td class="sector-td">${s.icon} ${s.name}</td>
+        <td class="sector-td">${s.icon} ${escapeHtml(s.name)}</td>
         ${cells}
         <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);text-align:center">${cnt}</td>
       </tr>
@@ -2233,7 +2317,7 @@ function renderStats(main, rcDiv) {
     const pct = Math.round(s.techCount / maxTech * 100);
     return `
       <div class="bar-row">
-        <div class="bar-label" style="font-size:10px">${s.icon} ${s.name}</div>
+        <div class="bar-label" style="font-size:10px">${s.icon} ${escapeHtml(s.name)}</div>
         <div class="bar-track">
           <div class="bar-fill bar-fill-a" style="width:${pct}%;background:linear-gradient(90deg,var(--law-a),var(--law-b))">${s.techCount}</div>
         </div>
@@ -2245,9 +2329,9 @@ function renderStats(main, rcDiv) {
   const bubbles = sectorCoverage.map(s => {
     const size = 24 + (s.techCount / maxTech) * 40;
     return `
-      <div class="bubble" onclick="pushHistoryState();state.prevView='stats';state.activeSector=${s.id};state.view='overview';buildSectorNav();render()" title="${s.name}: ${s.techCount}개 세부기술, ${s.lawCount}개 법령">
+      <div class="bubble" onclick="pushHistoryState();state.prevView='stats';state.activeSector=${s.id};state.view='overview';buildSectorNav();render()" title="${escapeHtml(s.name)}: ${s.techCount}개 세부기술, ${s.lawCount}개 법령">
         <div class="bubble-circle" style="width:${size}px;height:${size}px;border-color:${getLawColor(LAW_KEYS[s.lawCount-1]||'strategic')};background:${getLawColor(LAW_KEYS[s.lawCount-1]||'strategic')}22">${s.techCount}</div>
-        <div class="bubble-name">${s.icon} ${s.name}</div>
+        <div class="bubble-name">${s.icon} ${escapeHtml(s.name)}</div>
       </div>
     `;
   }).join('');
@@ -2332,7 +2416,7 @@ function renderSearch(main, rcDiv) {
 
   results.forEach(r => {
     const hlPattern = keywords.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
-    const highlight = (s) => s.replace(new RegExp(`(${hlPattern})`, 'gi'), '<mark>$1</mark>');
+    const highlight = (s) => escapeHtml(s).replace(new RegExp(`(${hlPattern})`, 'gi'), '<mark>$1</mark>');
     const hasSpecs = r.item.specs && LAW_KEYS.some(k => r.item.specs[k]);
     const pills = LAW_KEYS.map(k => {
       const active = r.item.laws[k] && state.activeLaws.has(k);
@@ -2347,7 +2431,7 @@ function renderSearch(main, rcDiv) {
     // Sector label row
     const sectorLabel = document.createElement('div');
     sectorLabel.className = 'sri-sector';
-    sectorLabel.innerHTML = `${r.sector.icon} ${r.sector.name}`;
+    sectorLabel.innerHTML = `${r.sector.icon} ${escapeHtml(r.sector.name)}`;
     card.appendChild(sectorLabel);
 
     // Tech row (same structure as card view for alignment)
@@ -2413,6 +2497,17 @@ function renderSearch(main, rcDiv) {
 
   main.innerHTML = inlineHeaderHTML;
   main.appendChild(container);
+}
+
+// ─── HTML ESCAPE HELPER ───
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 // ─── SPEC TEXT PARSER (기술명 축약 + 팝업 상세보기) ───
@@ -2635,9 +2730,9 @@ function toggleSpecsAccordion(row, item) {
       if (Array.isArray(parts)) {
         content = parts.map((p, idx) => {
           if (p.hasDetail) {
-            return `<span class="spec-title-link" data-spec-idx="${idx}" data-law="${k}">${p.title.replace(/\n/g, '<br>')}</span>`;
+            return `<span class="spec-title-link" data-spec-idx="${idx}" data-law="${k}">${escapeHtml(p.title).replace(/\n/g, '<br>')}</span>`;
           } else {
-            return `<span class="spec-title-plain">${p.title}</span>`;
+            return `<span class="spec-title-plain">${escapeHtml(p.title)}</span>`;
           }
         }).join('<br>');
       } else {
@@ -2778,27 +2873,32 @@ const LAW_LINKS = {
   strategic: {
     law:    "https://www.law.go.kr/법령/국가전략기술육성에관한특별법",
     decree: "https://www.law.go.kr/법령/국가전략기술육성에관한특별법시행령",
-    rule:   null
+    rule:   null,
+    notice: "https://www.law.go.kr/LSW//conAdmrulByLsPop.do?&lsiSeq=282933&joNo=0008&joBrNo=00&datClsCd=010102&dguBun=DEG&lnkText=%25EC%259D%25B8%25EC%25A0%2595%25ED%2595%2598%25EC%2597%25AC%2520%25EA%25B3%25A0%25EC%258B%259C%25ED%2595%2598%25EB%258A%2594&admRulPttninfSeq=49825#AJAX"
   },
   tax_strategic: {
     law:    "https://www.law.go.kr/법령/조세특례제한법",
     decree: "https://www.law.go.kr/법령/조세특례제한법시행령",
-    rule:   "https://www.law.go.kr/법령/조세특례제한법시행규칙"
+    rule:   "https://www.law.go.kr/법령/조세특례제한법시행규칙",
+    notice: null
   },
   tax_growth: {
     law:    "https://www.law.go.kr/법령/조세특례제한법",
     decree: "https://www.law.go.kr/법령/조세특례제한법시행령",
-    rule:   "https://www.law.go.kr/법령/조세특례제한법시행규칙"
+    rule:   "https://www.law.go.kr/법령/조세특례제한법시행규칙",
+    notice: null
   },
   advanced: {
     law:    "https://www.law.go.kr/법령/국가첨단전략산업경쟁력강화및보호에관한특별조치법",
     decree: "https://www.law.go.kr/법령/국가첨단전략산업경쟁력강화및보호에관한특별조치법시행령",
-    rule:   "https://www.law.go.kr/법령/국가첨단전략산업경쟁력강화및보호에관한특별조치법시행규칙"
+    rule:   "https://www.law.go.kr/법령/국가첨단전략산업경쟁력강화및보호에관한특별조치법시행규칙",
+    notice: "https://www.law.go.kr/LSW//conAdmrulByLsPop.do?&lsiSeq=283295&joNo=0002&joBrNo=00&datClsCd=010102&dguBun=DEG&lnkText=%25EC%2582%25B0%25EC%2597%2585%25ED%2586%25B5%25EC%2583%2581%25EB%25B6%2580%25EC%259E%25A5%25EA%25B4%2580%25EC%259D%25B4%2520%25EA%25B3%25A0%25EC%258B%259C%25ED%2595%2598%25EB%258A%2594&admRulPttninfSeq=49695"
   },
   protection: {
     law:    "https://www.law.go.kr/법령/산업기술의유출방지및보호에관한법률",
     decree: "https://www.law.go.kr/법령/산업기술의유출방지및보호에관한법률시행령",
-    rule:   "https://www.law.go.kr/법령/산업기술의유출방지및보호에관한법률시행규칙"
+    rule:   "https://www.law.go.kr/법령/산업기술의유출방지및보호에관한법률시행규칙",
+    notice: "https://www.law.go.kr/LSW//conAdmrulByLsPop.do?&lsiSeq=281125&joNo=0013&joBrNo=02&datClsCd=010102&dguBun=DEG&lnkText=%25EC%2582%25B0%25EC%2597%2585%25ED%2586%25B5%25EC%2583%2581%25EB%25B6%2580%25EC%259E%25A5%25EA%25B4%2580%25EC%259D%25B4%2520%25EC%25A0%2595%25ED%2595%2598%25EC%2597%25AC%2520%25EA%25B3%25A0%25EC%258B%259C%25ED%2595%2598%25EB%258A%2594&admRulPttninfSeq=35151"
   }
 };
 
@@ -2816,11 +2916,16 @@ function openLawModal(lawId) {
   const lawLink = document.getElementById('law-modal-law-link');
   const decreeLink = document.getElementById('law-modal-decree-link');
   const ruleLink = document.getElementById('law-modal-rule-link');
+  const noticeLink = document.getElementById('law-modal-notice-link');
   if (lawLink) lawLink.href = links.law || '#';
   if (decreeLink) decreeLink.href = links.decree || '#';
   if (ruleLink) {
     if (links.rule) { ruleLink.href = links.rule; ruleLink.style.display = 'inline'; }
     else { ruleLink.style.display = 'none'; }
+  }
+  if (noticeLink) {
+    if (links.notice) { noticeLink.href = links.notice; noticeLink.style.display = 'inline'; }
+    else { noticeLink.style.display = 'none'; }
   }
 
   // 본문 HTML 생성
@@ -3013,6 +3118,7 @@ init();
           <a id="law-modal-law-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:var(--accent); text-decoration:underline;">법 바로가기</a>
           <a id="law-modal-decree-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:var(--accent); text-decoration:underline;">시행령 바로가기</a>
           <a id="law-modal-rule-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:var(--accent); text-decoration:underline; display:none;">시행규칙 바로가기</a>
+          <a id="law-modal-notice-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:var(--accent); text-decoration:underline; display:none;">고시 바로가기</a>
         </div>
       </div>
       <button onclick="closeLawModal()" style="background:none; border:none; font-size:22px; cursor:pointer; color:var(--text-dim); line-height:1; padding:0 4px; align-self:flex-start;">✕</button>
